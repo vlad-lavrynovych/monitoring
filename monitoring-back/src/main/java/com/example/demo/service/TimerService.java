@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.data.CheckResultEntity;
 import com.example.demo.data.ConfigEntity;
-import com.example.demo.repo.CheckResultRepository;
 import com.example.demo.repo.ConfigRepository;
 import lombok.extern.slf4j.Slf4j;
 

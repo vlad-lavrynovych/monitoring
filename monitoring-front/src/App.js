@@ -28,7 +28,7 @@ const App = () => {
 
     useEffect(() => {
         updateState();
-        const interval = setInterval(updateState, 15000)
+        const interval = setInterval(updateState, 2000);
         return () => {
             clearInterval(interval);
         };
@@ -102,7 +102,8 @@ const App = () => {
                     {results.length > 0 ? (
                         results.map(result => (
                             <CheckResultRow id={result.id} key={result.id} result={result}
-                                            deleteResult={deleteResult} changeMonitoringStatus={changeMonitoringStatus}/>))
+                                            deleteResult={deleteResult}
+                                            changeMonitoringStatus={changeMonitoringStatus}/>))
                     ) : (
                         <tr>
                             <td colSpan={8}>No records yet</td>
@@ -113,7 +114,6 @@ const App = () => {
                 <br/>
                 <br/>
                 <br/>
-
                 <AddingForm addConfig={addConfig}/>
             </div>
         </div>

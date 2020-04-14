@@ -6,7 +6,7 @@ const AddingForm = props => {
         queryingInterval: 10000,
         responseTimeOk: 20000,
         responseTimeCritical: 10000,
-        responseTimeWarning: 5000,
+        responseTimeWarning: 50000,
         expectedHttpResponseCode: 200,
         minExpectedResponseSize: 0,
         maxExpectedResponseSize: 100000,
@@ -17,6 +17,7 @@ const AddingForm = props => {
 
     const changeHandler = (event) => {
         event.persist();
+        console.log(event);
         setState(inputs => ({...inputs, [event.target.name]: event.target.value}))
     };
 
