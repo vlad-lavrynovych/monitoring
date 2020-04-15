@@ -9,9 +9,10 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "checks1")
+@Table(name = "checks")
 public class CheckResultEntity {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 //    @OneToMany(mappedBy = "checkResult")

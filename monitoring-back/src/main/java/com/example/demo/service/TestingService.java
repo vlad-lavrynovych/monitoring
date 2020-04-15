@@ -4,14 +4,9 @@ import com.example.demo.data.CheckResultEntity;
 import com.example.demo.data.ConfigEntity;
 import com.example.demo.dto.CheckResultDto;
 import com.example.demo.enums.StatusEnum;
-import com.example.demo.repo.ConfigRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -19,23 +14,19 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 @Service
 @Slf4j
 public class TestingService {
-    @Autowired
-    private ConfigRepository configRepository;
 
     public CheckResultEntity performCheck(ConfigEntity config) {
         HttpURLConnection conn;
         List<CheckResultDto> results;
-        long startTime;
+        long startTime = System.currentTimeMillis();
         int code;
         int size = 0;
         long duration;
-        startTime = System.currentTimeMillis();
         try {
             URL url = new URL(config.getUrl());
             conn = (HttpURLConnection) url.openConnection();

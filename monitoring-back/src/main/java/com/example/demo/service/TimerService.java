@@ -2,16 +2,21 @@ package com.example.demo.service;
 
 import com.example.demo.data.CheckResultEntity;
 import com.example.demo.data.ConfigEntity;
+
 import com.example.demo.data.LogsEntity;
 import com.example.demo.repo.CheckResultRepository;
+
 import com.example.demo.repo.ConfigRepository;
 import com.example.demo.repo.LogsRepository;
 import lombok.extern.slf4j.Slf4j;
 
+import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -24,6 +29,7 @@ public class TimerService {
     private ConfigRepository configRepository;
     @Autowired
     private LogsRepository logsRepository;
+
 
     public void runTimer(long id, Integer queryingInterval) {
         Timer timer = new Timer();
@@ -57,4 +63,10 @@ public class TimerService {
             }
         }, queryingInterval, queryingInterval);
     }
+
+    public void runTimersOnStartup() {
+        List<ConfigEntity> configs = configRepository.findAll();
+        configs.forEach(s -> runTimer(s.getId(), s.getQueryingInterval()));
+    }
+
 }
