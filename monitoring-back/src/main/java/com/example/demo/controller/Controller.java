@@ -81,7 +81,7 @@ public class Controller {
         List<LogsEntity> logsEnt = logsRepository.findLogs(Long.valueOf(id), time);
         List<LogsEntity> logsReturn = new ArrayList<LogsEntity>();
         for (int i = 0; i < logsEnt.size(); i++) {
-            if (((logsEnt.get(i).getLastCheck().getTime() - time.getTime()) - (logsEnt.get(i).getLastCheck().getTime() - time.getTime()) % 1000)%(Long.valueOf(min)*53000) == 0){
+            if (((logsEnt.get(i).getLastCheck().getTime() - time.getTime()) - (logsEnt.get(i).getLastCheck().getTime() - time.getTime()) % 1000)%(Long.valueOf(min)*60000) == 0){
                 logsReturn.add(logsEnt.get(i));
             }
 
