@@ -11,6 +11,7 @@ import java.util.Date;
 @Table(name = "checks")
 public class CheckResultEntity {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ToString.Exclude

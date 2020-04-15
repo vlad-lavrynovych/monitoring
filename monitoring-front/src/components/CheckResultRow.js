@@ -27,6 +27,14 @@ const CheckResultRow = (props) => {
             <th>{props.result.config.monitored ? "Monitored" : " Not Monitored"}</th>
             <th>
                 <div>
+                    <button type="submit" className="btn btn-primary" onClick={() => {
+                        props.getFullInfo(props.id)
+                    }}>Details
+                    </button>
+                </div>
+            </th>
+            <th>
+                <div>
                     <button type="submit" className="btn btn-danger" onClick={() => {
                         props.deleteResult(props.id)
                     }}>Delete
