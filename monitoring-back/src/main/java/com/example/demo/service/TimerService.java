@@ -2,8 +2,10 @@ package com.example.demo.service;
 
 import com.example.demo.data.CheckResultEntity;
 import com.example.demo.data.ConfigEntity;
+import com.example.demo.data.LogsEntity;
 import com.example.demo.repo.CheckResultRepository;
 import com.example.demo.repo.ConfigRepository;
+import com.example.demo.repo.LogsRepository;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ public class TimerService {
     private TestingService testingService;
     @Autowired
     private ConfigRepository configRepository;
+    @Autowired
+    private LogsRepository logsRepository;
 
     public void runTimer(long id, Integer queryingInterval) {
         Timer timer = new Timer();
@@ -36,6 +40,15 @@ public class TimerService {
                     configEntity.getCheckResult().setResponseSize(checkResultEntity.getResponseSize());
                     configEntity.getCheckResult().setStatus(checkResultEntity.getStatus());
                     configRepository.save(configEntity);
+                    LogsEntity logsEntity = new LogsEntity();
+                    logsEntity.setDetails(checkResultEntity.getDetails());
+                    logsEntity.setDuration(checkResultEntity.getDuration());
+                    logsEntity.setLastCheck(checkResultEntity.getLastCheck());
+                    logsEntity.setResponseCode(checkResultEntity.getResponseCode());
+                    logsEntity.setResponseSize(checkResultEntity.getResponseSize());
+                    logsEntity.setStatus(checkResultEntity.getStatus());
+                    logsEntity.setCheckId(checkResultEntity.getId() - Long.valueOf(1));
+                    logsRepository.save(logsEntity);
                     log.info("Refreshed check results, config id :: {}", id);
                 } else {
                     log.info("Task was cancelled, config id :: {}", id);

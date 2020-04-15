@@ -2,15 +2,23 @@ package com.example.demo.controller;
 
 import com.example.demo.data.CheckResultEntity;
 import com.example.demo.data.ConfigEntity;
+import com.example.demo.data.LogsEntity;
 import com.example.demo.repo.CheckResultRepository;
 import com.example.demo.repo.ConfigRepository;
+import com.example.demo.repo.LogsRepository;
 import com.example.demo.service.TestingService;
 import com.example.demo.service.TimerService;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -24,6 +32,8 @@ public class Controller {
     private TestingService testingService;
     @Autowired
     private TimerService timerService;
+    @Autowired
+    private LogsRepository logsRepository;
 
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     public List<CheckResultEntity> getAll() {
@@ -51,7 +61,9 @@ public class Controller {
         if (checkResultEntity.getConfig().getMonitored()) {
             timerService.runTimer(checkResultEntity.getConfig().getId(), checkResultEntity.getConfig().getQueryingInterval());
         }
+
         checkResultRepository.save(checkResultEntity);
+//        logsRepository.save(logsEntity);
         return getAll();
     }
 
@@ -62,4 +74,21 @@ public class Controller {
         configRepository.deleteById(checkResultEntity.getConfig().getId());
         return getAll();
     }
+    @RequestMapping(value = "/logs", method = RequestMethod.GET)
+    public List<LogsEntity> logs(@RequestParam String id, @RequestParam String min) {
+        Timestamp time = logsRepository.findLogsTimer(Long.valueOf(id));
+        System.out.println(time.getTime());
+        List<LogsEntity> logsEnt = logsRepository.findLogs(Long.valueOf(id), time);
+        List<LogsEntity> logsReturn = new ArrayList<LogsEntity>();
+        for (int i = 0; i < logsEnt.size(); i++) {
+            if (((logsEnt.get(i).getLastCheck().getTime() - time.getTime()) - (logsEnt.get(i).getLastCheck().getTime() - time.getTime()) % 1000)%(Long.valueOf(min)*53000) == 0){
+                logsReturn.add(logsEnt.get(i));
+            }
+
+        }
+        return logsReturn;
+
+    }
+
+
 }
