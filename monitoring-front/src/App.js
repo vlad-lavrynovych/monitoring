@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import logo from './logo.svg';
 import './App.css';
 import './css/bootstrap.css';
 import CheckResultRow from "./components/CheckResultRow";
