@@ -1,7 +1,12 @@
 import React from "react";
-import '../css/bootstrap.css'
+import {Link} from "react-router-dom";
+import AddingForm from "./AddingForm";
+import {useHistory} from "react-router";
+
 
 const CheckResultRow = (props) => {
+
+    const history = useHistory();
 
     const getStatusColor = () => {
         if (
@@ -27,9 +32,8 @@ const CheckResultRow = (props) => {
             <th>{props.result.config.monitored ? "Monitored" : " Not Monitored"}</th>
             <th>
                 <div>
-                    <button type="submit" className="btn btn-primary" onClick={() => {
-                        props.getFullInfo(props.id)
-                    }}>Details
+                    <button type="submit" className="btn btn-primary"
+                            onClick={() => history.push("/viewDetails/" + props.id)}>Details
                     </button>
                 </div>
             </th>
