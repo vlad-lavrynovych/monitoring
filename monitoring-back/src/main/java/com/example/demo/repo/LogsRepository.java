@@ -22,14 +22,17 @@ public interface LogsRepository extends JpaRepository<LogsEntity, Long>, JpaSpec
             value = "SELECT * FROM logs WHERE check_id = :check_id",
             nativeQuery = true)
     List<LogsEntity> findLogsById(@Param("check_id") Long check_id);
+
     @Query(
             value = "SELECT min(last_check) FROM logs WHERE check_id = :check_id",
             nativeQuery = true)
     Timestamp findLogsTimer(@Param("check_id") Long check_id);
+
     @Query(
             value = "SELECT * FROM logs WHERE check_id = :check_id and last_check > :time",
             nativeQuery = true)
     List<LogsEntity> findLogs(@Param("check_id") Long check_id, @Param("time") Timestamp time);
+
     List<LogsRepository> findAllByOrderByIdAsc();
 }
 

@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 
-const FilterForm = (props) => {
+const FilterForm = props => {
 
-    const {id} = props.id;
+    console.log(props);
 
     const initialState = {
-        id: id,
+        id: props.id,
         period: 30
     };
 
@@ -13,7 +13,6 @@ const FilterForm = (props) => {
 
     const changeHandler = (event) => {
         event.persist();
-        console.log(event);
         setState(inputs => ({...inputs, [event.target.name]: event.target.value}))
     };
 

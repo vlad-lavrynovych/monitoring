@@ -33,7 +33,11 @@ const CheckResultRow = (props) => {
             <th>
                 <div>
                     <button type="submit" className="btn btn-primary"
-                            onClick={() => history.push("/viewDetails/" + props.id)}>Details
+                            onClick={() => history.push({
+                                pathname: "/viewDetails/" + props.id,
+                                props: props.id
+                            })
+                            }>Details
                     </button>
                 </div>
             </th>

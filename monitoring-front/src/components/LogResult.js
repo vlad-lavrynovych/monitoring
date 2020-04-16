@@ -20,14 +20,14 @@ const LogResult = (props) => {
 
     return (
         <tr>
-            <th>{props.result.config.url}</th>
+            {/*<th>{props.result.config.url}</th>*/}
             <th className={getStatusColor()}>{props.result.status} </th>
             <th>{new Date(props.result.lastCheck).toLocaleString()}</th>
             <th>{props.result.duration}</th>
             <th>{props.result.responseCode}</th>
             <th>{props.result.responseSize}</th>
             <th>{props.result.details}</th>
-            <th>{props.result.config.monitored ? "Monitored" : " Not Monitored"}</th>
+            {/*<th>{props.result.config.monitored ? "Monitored" : " Not Monitored"}</th>*/}
         </tr>
     );
 };

@@ -1,7 +1,6 @@
 package com.example.demo.data;
 
 import lombok.Data;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
