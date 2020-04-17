@@ -76,12 +76,22 @@ public class Controller {
 
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping(value = "/logs", method = RequestMethod.GET)
-    public List<LogsEntity> logs(@RequestParam("id") String id, @RequestParam("period") String min) {
+    public List<LogsEntity> logs(@RequestParam("id") String id, @RequestParam("period") String min, @RequestParam("measure") String measure) {
         long minLong = Long.parseLong(min);
         Date now = new Date();
         List<LogsEntity> logsEntities = logsRepository.findLogsById(Long.valueOf(id));
         logsEntities = logsEntities.stream().filter(s ->
-                TimeUnit.MILLISECONDS.toMinutes(now.getTime() - s.getLastCheck().getTime()) < minLong).collect(Collectors.toList());
+                {
+                    switch (measure) {
+                       case "minutes":
+                            return TimeUnit.MILLISECONDS.toMinutes(now.getTime() - s.getLastCheck().getTime()) < minLong;
+                        case "hours":
+                            return TimeUnit.MILLISECONDS.toHours(now.getTime() - s.getLastCheck().getTime()) < minLong;
+                        default:
+                            return TimeUnit.MILLISECONDS.toSeconds(now.getTime() - s.getLastCheck().getTime()) < minLong;
+                    }
+                }).collect(Collectors.toList()
+                );
         return logsEntities;
     }
 

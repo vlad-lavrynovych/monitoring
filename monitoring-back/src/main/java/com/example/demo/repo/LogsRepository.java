@@ -19,7 +19,7 @@ import java.util.List;
 @Repository
 public interface LogsRepository extends JpaRepository<LogsEntity, Long>, JpaSpecificationExecutor<LogsEntity> {
     @Query(
-            value = "SELECT * FROM logs WHERE check_id = :check_id",
+            value = "SELECT * FROM logs WHERE check_id = :check_id order by id",
             nativeQuery = true)
     List<LogsEntity> findLogsById(@Param("check_id") Long check_id);
 

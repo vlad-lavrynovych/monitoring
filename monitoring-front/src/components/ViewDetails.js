@@ -6,6 +6,7 @@ import LogResult from "./LogResult";
 const ViewDetails = (props) => {
     const [logResults, setLogResults] = useState([]);
     let data = [];
+    let [value, setValue] = useState([]);
     const props1 = {
         data,
         gridX: true,
@@ -17,9 +18,10 @@ const ViewDetails = (props) => {
         accent: 'palevioletred',
         fillBelow: 'rgb(255,0,12)',
         hover: true,
+        onHover: (arr) => {
+            setValue([arr[1], new Date(logResults[arr[0]].lastCheck).toLocaleString()])
+        }
     };
-    let labels = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-    const options = {fillColor: '#FFFFFF', strokeColor: '#0000FF'};
     const filterRequest = params => {
         data = [];
         let url = new URL("http://localhost:8081/logs");
@@ -41,12 +43,23 @@ const ViewDetails = (props) => {
             <div className="navbar navbar-dark bg-dark d-flex justify-content-center align-items-center">
                 <h1 className="text-white">Website Monitoring Tool</h1>
             </div>
+
             <FilterForm id={props.match.params.id} filterRequest={filterRequest}/>
             <div className="d-flex justify-content-around flex-column align-items-center">
+                {logResults.length !== 0 && <div className="alert alert-warning font-weight-bold">
+                    <h2>
+                        Results: {logResults.length}
+                    </h2>{value[0] > 0 ? <div>
+                    <h2>
+                        Value: {value[0]}
+                    </h2>
+                    <h3>
+                        Time: {value[1]}
+                    </h3>
+                </div> : null}
+                </div>}
                 <br/>
-                <br/>
-                <br/>
-                <div  className="w-75 h-50">
+                <div className="w-75 h-auto">
                     <LineGraph {...props1}/>
                 </div>
                 <table className="table table-striped table-dark w-75">
