@@ -9,7 +9,6 @@ const App = () => {
     const [results, setResults] = useState([]);
 
     const updateState = () => {
-        console.log("called update state");
         fetch('http://localhost:8081/getAll',
             {
                 mode: 'cors',

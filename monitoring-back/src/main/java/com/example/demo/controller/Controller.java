@@ -2,15 +2,23 @@ package com.example.demo.controller;
 
 import com.example.demo.data.CheckResultEntity;
 import com.example.demo.data.ConfigEntity;
+import com.example.demo.data.LogsEntity;
 import com.example.demo.repo.CheckResultRepository;
 import com.example.demo.repo.ConfigRepository;
+import com.example.demo.repo.LogsRepository;
 import com.example.demo.service.TestingService;
 import com.example.demo.service.TimerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
 
 @RestController
 @Slf4j
@@ -24,6 +32,8 @@ public class Controller {
     private TestingService testingService;
     @Autowired
     private TimerService timerService;
+    @Autowired
+    private LogsRepository logsRepository;
 
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     public List<CheckResultEntity> getAll() {
@@ -51,6 +61,7 @@ public class Controller {
         if (checkResultEntity.getConfig().getMonitored()) {
             timerService.runTimer(checkResultEntity.getConfig().getId(), checkResultEntity.getConfig().getQueryingInterval());
         }
+
         checkResultRepository.save(checkResultEntity);
         return getAll();
     }
@@ -62,4 +73,27 @@ public class Controller {
         configRepository.deleteById(checkResultEntity.getConfig().getId());
         return getAll();
     }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @RequestMapping(value = "/logs", method = RequestMethod.GET)
+    public List<LogsEntity> logs(@RequestParam("id") String id, @RequestParam("period") String min, @RequestParam("measure") String measure) {
+        long minLong = Long.parseLong(min);
+        Date now = new Date();
+        List<LogsEntity> logsEntities = logsRepository.findLogsById(Long.valueOf(id));
+        logsEntities = logsEntities.stream().filter(s ->
+                {
+                    switch (measure) {
+                       case "minutes":
+                            return TimeUnit.MILLISECONDS.toMinutes(now.getTime() - s.getLastCheck().getTime()) < minLong;
+                        case "hours":
+                            return TimeUnit.MILLISECONDS.toHours(now.getTime() - s.getLastCheck().getTime()) < minLong;
+                        default:
+                            return TimeUnit.MILLISECONDS.toSeconds(now.getTime() - s.getLastCheck().getTime()) < minLong;
+                    }
+                }).collect(Collectors.toList()
+                );
+        return logsEntities;
+    }
+
+
 }

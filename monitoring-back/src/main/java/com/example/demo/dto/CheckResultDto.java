@@ -1,7 +1,6 @@
 package com.example.demo.dto;
 
 import com.example.demo.enums.StatusEnum;
-
 import java.util.Objects;
 
 public class CheckResultDto {
